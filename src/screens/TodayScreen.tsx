@@ -4,6 +4,7 @@ import { MEAL_TYPES } from '../types'
 import { loadDay, loadProfile, resolveFood, saveDay, todayKST } from '../lib/storage'
 import { scoreDay } from '../lib/score'
 import { FoodPicker } from '../components/FoodPicker'
+import { SupplementCard } from '../components/SupplementCard'
 import { geumeumOf } from '../data/geumeum'
 
 const HABIT_LABELS: { key: keyof DayLog['habits']; label: string }[] = [
@@ -59,6 +60,12 @@ export function TodayScreen() {
 
   function setMetric(key: 'weightKg' | 'waistCm', value: string) {
     update({ ...day, [key]: value === '' ? undefined : Number(value) })
+  }
+
+  function toggleSupp(key: string) {
+    const cur = day.supplementsTaken ?? []
+    const next = cur.includes(key) ? cur.filter((k) => k !== key) : [...cur, key]
+    update({ ...day, supplementsTaken: next })
   }
 
   function addWater(delta: number) {
@@ -228,6 +235,9 @@ export function TodayScreen() {
           ))}
         </div>
       </div>
+
+      {/* 영양 보충 */}
+      <SupplementCard profile={profile} taken={day.supplementsTaken ?? []} onToggle={toggleSupp} />
 
       {/* 컨디션·스트레스 메모 */}
       {m.conditionMemo && (

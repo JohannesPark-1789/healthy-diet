@@ -75,6 +75,8 @@ export interface DayLog {
   bowel?: boolean
   /** 컨디션·스트레스 메모 */
   conditionNote?: string
+  /** 오늘 챙긴 영양 보충(보충제) key 목록 */
+  supplementsTaken?: string[]
 }
 
 export interface BodyEntry {
