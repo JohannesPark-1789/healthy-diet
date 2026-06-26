@@ -65,6 +65,23 @@ export function TodayScreen() {
     update({ ...day, waterCups: Math.max(0, (day.waterCups ?? 0) + delta) })
   }
 
+  /** 끼니 항목 수량 조절 (0.5인분 단위, 0 이하면 삭제) */
+  function setQty(meal: MealType, idx: number, delta: number) {
+    const meals = day.meals
+      .map((x) =>
+        x.meal === meal
+          ? {
+              ...x,
+              items: x.items
+                .map((it, i) => (i === idx ? { ...it, qty: Math.round((it.qty + delta) * 2) / 2 } : it))
+                .filter((it) => it.qty > 0),
+            }
+          : x,
+      )
+      .filter((x) => x.items.length > 0)
+    update({ ...day, meals })
+  }
+
   return (
     <div className="space-y-4">
       <ScoreCard score={score} target={profile.antiScoreTarget} />
@@ -158,12 +175,30 @@ export function TodayScreen() {
                           {isGeum && <GeumMark id={f.id} />}
                           {avoid && <span className="ml-1 text-red-500">⚠️</span>}
                         </span>
-                        <button
-                          onClick={() => removeItem(meal, idx)}
-                          className="text-xs text-gray-300 active:text-red-500"
-                        >
-                          ✕
-                        </button>
+                        <div className="flex shrink-0 items-center gap-1.5">
+                          <button
+                            onClick={() => setQty(meal, idx, -0.5)}
+                            className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-gray-600 active:bg-gray-200"
+                            aria-label="수량 줄이기"
+                          >
+                            −
+                          </button>
+                          <span className="w-9 text-center text-xs font-medium text-gray-700">×{it.qty}</span>
+                          <button
+                            onClick={() => setQty(meal, idx, 0.5)}
+                            className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 text-green-700 active:bg-green-200"
+                            aria-label="수량 늘리기"
+                          >
+                            ＋
+                          </button>
+                          <button
+                            onClick={() => removeItem(meal, idx)}
+                            className="ml-0.5 text-xs text-gray-300 active:text-red-500"
+                            aria-label="삭제"
+                          >
+                            ✕
+                          </button>
+                        </div>
                       </li>
                     )
                   })}
