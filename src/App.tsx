@@ -8,10 +8,6 @@ import { ProfileScreen } from './screens/ProfileScreen'
 import { useReminders } from './lib/reminders'
 import { getActiveId, loadProfiles, setActiveProfile } from './lib/storage'
 
-function initials(name: string) {
-  return name.length >= 2 ? name.slice(-2) : name
-}
-
 export default function App() {
   const [tab, setTab] = useState<TabKey>('today')
   const [showProfile, setShowProfile] = useState(false)
@@ -46,19 +42,15 @@ export default function App() {
               <button
                 key={p.id}
                 onClick={() => switchTo(p.id)}
-                className={`flex items-center gap-1.5 rounded-full py-1 pl-1 pr-3 text-sm ${
+                className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-sm ${
                   on
                     ? 'border-2 border-green-500 bg-green-50 font-semibold text-green-700'
                     : 'border border-gray-200 text-gray-500'
                 }`}
               >
                 <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] ${
-                    p.sex === 'F' ? 'bg-pink-100 text-pink-700' : 'bg-blue-100 text-blue-700'
-                  }`}
-                >
-                  {initials(p.name)}
-                </span>
+                  className={`h-2.5 w-2.5 rounded-full ${p.sex === 'F' ? 'bg-pink-400' : 'bg-blue-400'}`}
+                />
                 {p.name}
               </button>
             )

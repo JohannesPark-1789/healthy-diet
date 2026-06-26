@@ -94,6 +94,7 @@ export function ProfileScreen({ onClose }: { onClose: () => void }) {
 
         <div className="space-y-4 p-4">
           <Section title="나의 정보">
+            <Field label="이름" value={p.name} type="text" onChange={(v) => setP({ ...p, name: v })} />
             <Field label="키 (cm)" value={p.heightCm} onChange={(v) => num('heightCm', v)} />
             <Field label="체중 (kg)" value={p.weightKg} onChange={(v) => num('weightKg', v)} />
           </Section>
