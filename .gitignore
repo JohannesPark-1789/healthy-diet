@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+dist-ssr/
+*.local
+
+# 개인 건강정보 — git 커밋 절대 금지 (recovery-log 프라이버시 정책 준수)
+docs/private/
+*.pdf
+
+# editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+*.log
